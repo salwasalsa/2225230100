@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AboutController;
 use App\Http\Controllers\SalwaController;
 
 /*
@@ -14,13 +13,20 @@ use App\Http\Controllers\SalwaController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/', function (){
+    return view('welcome');
+});
 
+Route::middleware(['auth'])->group(function(){
+    Route::get('/salwa',[SalwaController::class, 'index']);
+    Route::get('/salwa/create',[SalwaController::class, 'create']);
+    Route::post('/salwa/store',[SalwaController::class, 'store']);
+    Route::get('/salwa/{id}/edit',[SalwaController::class, 'edit']);
+    Route::put('/salwa/{id}',[SalwaController::class, 'update']);
+    Route::delete('/salwa/{id}',[SalwaController::class, 'destroy']);
+});
 
+Auth::routes();
 
-Route::get('/salwa',[SalwaController::class, 'index']);
-Route::get('/salwa',[SalwaController::class, 'index']);
-Route::get('/salwa/create',[SalwaController::class, 'create']);
-Route::post('/salwa/store',[SalwaController::class, 'store']);
-Route::get('/salwa/{id}/edit',[SalwaController::class, 'edit']);
-Route::put('/salwa/{id}',[SalwaController::class, 'update']);
-Route::delete('/salwa/{id}',[SalwaController::class, 'destroy']);
+Route::get('/home', [SalwaController::class, 'index'])->name('home');
+
